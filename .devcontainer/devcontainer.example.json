@@ -1,0 +1,72 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/go
+{
+  "name": "GO_LIBRARY_devcontainer",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  // "image": "mcr.microsoft.com/devcontainers/go:0-1-bullseye",
+
+  "build": { "dockerfile": "Dockerfile.dev" },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": { "path": "/bin/zsh" }
+        },
+        "files.associations": {
+          "*.examle.json": "jsonc"
+        },
+        "editor.formatOnSave": true,
+        "editor.wordWrap": "on",
+        "gitlens.codeLens.enabled": false,
+        "git.autofetch": true,
+        "git.autofetchPeriod": 180
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "golang.Go",
+        "mhutchie.git-graph",
+        "eamodio.gitlens",
+        "oderwat.indent-rainbow",
+        "ms-vsliveshare.vsliveshare",
+        "wakatime.vscode-wakatime",
+        "redhat.vscode-yaml",
+        "tabnine.tabnine-vscode",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "go version",
+
+  // Configure tool-specific properties.
+  // "customizations": {},
+
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+  "runArgs": ["--name", "GO_LIBRARY_devcontainer"],
+
+  "workspaceMount": "source=${localWorkspaceFolder}/,target=/go-library,type=bind,consistency=cached",
+  "workspaceFolder": "/go-library",
+
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.netrc,target=/home/vscode/.netrc,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.wakatime.cfg,target=/home/vscode/.wakatime.cfg,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.devcontainer/.zshrc,target=/home/vscode/.zshrc,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.devcontainer/.p10k.zsh,target=/home/vscode/.p10k.zsh,type=bind,consistency=cached",
+    // Mac OS
+    // "source=${localEnv:HOME}/Library/Preferences/TabNine,target=/home/vscode/.config/TabNine,type=bind,consistency=cached"
+    // Linux
+    "source=${localEnv:HOME}/.config/TabNine,target=/home/vscode/.config/TabNine,type=bind,consistency=cached"
+  ]
+}
