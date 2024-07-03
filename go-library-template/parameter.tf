@@ -17,7 +17,7 @@ data "coder_parameter" "workspace_git_clone" {
     if [ ! -d ~/${local.workspace_path} ]; then
       git clone -b ${data.coder_parameter.workspace_git_branch.value} --recurse-submodules ${local.workspace_git_repo} ~/${local.workspace_path}
       cd ~/${local.workspace_path}
-      ./git_all.sh git switch dev && ./git_all.sh git pull --rebase 
+      ./git_all.sh git switch main && ./git_all.sh git pull --rebase 
     fi
   EOT
   description = "Command to clone git"
