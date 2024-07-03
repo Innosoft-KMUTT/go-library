@@ -4,30 +4,31 @@ import (
 	"database/sql"
 	"encoding/json"
 	"strconv"
+	"strings"
 )
 
-// NullInt64 is a custom type that embeds sql.NullInt64
-type NullInt64 struct {
-	sql.NullInt64
+// NullBool is a custom type that embeds sql.NullBool
+type NullBool struct {
+	sql.NullBool
 }
 
-// MarshalJSON customizes the JSON marshalling for NullInt64
-func (nf NullInt64) MarshalJSON() ([]byte, error) {
+// MarshalJSON customizes the JSON marshalling for NullBool
+func (nf NullBool) MarshalJSON() ([]byte, error) {
 	if !nf.Valid {
 		return json.Marshal(nil)
 	}
-	return json.Marshal(nf.Int64)
+	return json.Marshal(nf.Bool)
 }
 
-// UnmarshalJSON customizes the JSON unmarshalling for NullInt64
-func (nf *NullInt64) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON customizes the JSON unmarshalling for NullBool
+func (nf *NullBool) UnmarshalJSON(data []byte) error {
 	var errString error
-	var errInt error
+	var errBool error
 
-	// Unmarshal the data into a int64
-	var val *int64
+	// Unmarshal the data into a bool
+	var val *bool
 	if err := json.Unmarshal(data, &val); err != nil {
-		errInt = err
+		errBool = err
 	}
 
 	// Unmarshal the data into a string
@@ -36,16 +37,16 @@ func (nf *NullInt64) UnmarshalJSON(data []byte) error {
 		errString = err
 	}
 
-	if errString != nil && errInt != nil {
+	if errString != nil && errBool != nil {
 		if errString != nil {
 			return errString
 		}
 
-		if errInt != nil {
-			return errInt
+		if errBool != nil {
+			return errBool
 		}
-	} else if errInt == nil {
-		nf.Int64 = *val
+	} else if errBool == nil {
+		nf.Bool = *val
 		nf.Valid = true
 		return nil
 	}
@@ -57,13 +58,13 @@ func (nf *NullInt64) UnmarshalJSON(data []byte) error {
 	}
 
 	// Parse the string to int64
-	value, err := strconv.ParseInt(str, 10, 64)
+	value, err := strconv.ParseBool(strings.ToLower(str))
 	if err != nil {
 		return err
 	}
 
 	// Set the value and mark it as valid
-	nf.Int64 = value
+	nf.Bool = value
 	nf.Valid = true
 	return nil
 }

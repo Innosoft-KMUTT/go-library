@@ -30,7 +30,7 @@ func TestNullFloat64(t *testing.T) {
 	json.Unmarshal([]byte(s), &data)
 	fmt.Printf("s: %s\n", s)
 	fmt.Printf("value: %v\n", data.Value)
-	assert.Equal(t, data.Value.Float64, 0, "value Float64 should be 0")
+	assert.Equal(t, data.Value.Float64, 0.0, "value Float64 should be 0")
 
 	s = string(`{"value":1.1}`)
 	data = TestNullFloat64Type{}
