@@ -51,24 +51,16 @@ func (nf *NullBool) UnmarshalJSON(data []byte) error {
 		if errBool != nil {
 			return errBool
 		}
-	} else if errBool == nil && errString == nil {
-		if str == "" && val == nil {
-			nf.Valid = false
-			return nil
-		} else {
-			nf.Bool = *val
-			nf.Valid = true
-			return nil
-		}
-	} else if errBool == nil {
-		if val == nil {
-			nf.Valid = false
-			return nil
-		} else {
-			nf.Bool = *val
-			nf.Valid = true
-			return nil
-		}
+	} else if errBool == nil && errString == nil && str == "" && val == nil {
+		nf.Valid = false
+		return nil
+	} else if errBool == nil && val == nil {
+		nf.Valid = false
+		return nil
+	} else {
+		nf.Bool = *val
+		nf.Valid = true
+		return nil
 	}
 
 	// If the string is empty, set the value to nil (invalid)

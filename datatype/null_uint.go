@@ -37,6 +37,12 @@ func (nf *NullUInt) UnmarshalJSON(data []byte) error {
 		errString = err
 	}
 
+	// fmt.Printf("errBool: %v\n", errInt)
+	// fmt.Printf("errString: %v\n", errString)
+
+	// fmt.Printf("val: %v\n", val)
+	// fmt.Printf("str: %v\n", str)
+
 	if errString != nil && errInt != nil {
 		if errString != nil {
 			return errString
@@ -45,11 +51,16 @@ func (nf *NullUInt) UnmarshalJSON(data []byte) error {
 		if errInt != nil {
 			return errInt
 		}
-	} else if errInt == nil {
+	} else if errInt == nil && errString == nil && str == "" && val == nil {
+		nf.Valid = false
+		return nil
+	} else if errInt == nil && val == nil {
+		nf.Valid = false
+		return nil
+	} else {
 		if *val < 0 {
 			return errors.New("value must greater than zero")
 		}
-
 		nf.Int64 = *val
 		nf.Valid = true
 		return nil
