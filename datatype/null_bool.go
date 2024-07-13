@@ -3,7 +3,6 @@ package datatype
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -38,8 +37,11 @@ func (nf *NullBool) UnmarshalJSON(data []byte) error {
 		errString = err
 	}
 
-	fmt.Printf("errBool: %v\n", errBool)
-	fmt.Printf("errString: %v\n", errString)
+	// fmt.Printf("errBool: %v\n", errBool)
+	// fmt.Printf("errString: %v\n", errString)
+
+	// fmt.Printf("val: %v\n", val)
+	// fmt.Printf("str: %v\n", str)
 
 	if errString != nil && errBool != nil {
 		if errString != nil {
@@ -49,10 +51,24 @@ func (nf *NullBool) UnmarshalJSON(data []byte) error {
 		if errBool != nil {
 			return errBool
 		}
+	} else if errBool == nil && errString == nil {
+		if str == "" && val == nil {
+			nf.Valid = false
+			return nil
+		} else {
+			nf.Bool = *val
+			nf.Valid = true
+			return nil
+		}
 	} else if errBool == nil {
-		nf.Bool = *val
-		nf.Valid = true
-		return nil
+		if val == nil {
+			nf.Valid = false
+			return nil
+		} else {
+			nf.Bool = *val
+			nf.Valid = true
+			return nil
+		}
 	}
 
 	// If the string is empty, set the value to nil (invalid)
