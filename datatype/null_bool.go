@@ -3,6 +3,7 @@ package datatype
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -36,6 +37,9 @@ func (nf *NullBool) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &str); err != nil {
 		errString = err
 	}
+
+	fmt.Printf("errBool: %v\n", errBool)
+	fmt.Printf("errString: %v\n", errString)
 
 	if errString != nil && errBool != nil {
 		if errString != nil {
