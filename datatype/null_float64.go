@@ -44,7 +44,13 @@ func (nf *NullFloat64) UnmarshalJSON(data []byte) error {
 		if errFloat != nil {
 			return errFloat
 		}
-	} else if errFloat == nil {
+	} else if errFloat == nil && errString == nil && str == "" && val == nil {
+		nf.Valid = false
+		return nil
+	} else if errFloat == nil && val == nil {
+		nf.Valid = false
+		return nil
+	} else {
 		nf.Float64 = *val
 		nf.Valid = true
 		return nil
