@@ -37,20 +37,14 @@ func (nf *NullInt32) UnmarshalJSON(data []byte) error {
 	}
 
 	if errString != nil && errInt != nil {
-		if errString != nil {
-			return errString
-		}
-
-		if errInt != nil {
-			return errInt
-		}
+		return errString
 	} else if errInt == nil && errString == nil && str == "" && val == nil {
 		nf.Valid = false
 		return nil
 	} else if errInt == nil && val == nil {
 		nf.Valid = false
 		return nil
-	} else {
+	} else if errInt == nil && val != nil {
 		nf.Int32 = *val
 		nf.Valid = true
 		return nil

@@ -44,20 +44,14 @@ func (nf *NullBool) UnmarshalJSON(data []byte) error {
 	// fmt.Printf("str: %v\n", str)
 
 	if errString != nil && errBool != nil {
-		if errString != nil {
-			return errString
-		}
-
-		if errBool != nil {
-			return errBool
-		}
+		return errString
 	} else if errBool == nil && errString == nil && str == "" && val == nil {
 		nf.Valid = false
 		return nil
 	} else if errBool == nil && val == nil {
 		nf.Valid = false
 		return nil
-	} else {
+	} else if errBool == nil && val != nil {
 		nf.Bool = *val
 		nf.Valid = true
 		return nil
